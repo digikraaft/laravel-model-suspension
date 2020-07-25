@@ -122,7 +122,14 @@ $model->numberOfTimesSuspended($from, $to);
 Note that an `InvalidDate` exception will be thrown if the `$from` date is later than the `$to`
 
 ### Check if model has been suspended
-You can check if a model has ever been suspended:
+
+You can check if a model is currently suspended:
+
+```
+$model->isSuspended();
+```
+
+You can also check if a model has ever been suspended:
 ```
 $model->hasEverBeenSuspended();
 ```
