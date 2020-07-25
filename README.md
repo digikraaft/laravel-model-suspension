@@ -1,4 +1,4 @@
-# Make Eloquent models suspendable
+# Suspend Eloquent models
 ![tests](https://github.com/digikraaft/laravel-model-suspension/workflows/tests/badge.svg)
 [![Build Status](https://scrutinizer-ci.com/g/digikraaft/laravel-model-suspension/badges/build.png?b=master)](https://scrutinizer-ci.com/g/digikraaft/laravel-model-suspension/build-status/master)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/digikraaft/laravel-model-suspension/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/digikraaft/laravel-model-suspension/?branch=master)
