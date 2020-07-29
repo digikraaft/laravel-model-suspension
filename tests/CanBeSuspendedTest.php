@@ -264,4 +264,10 @@ class CanBeSuspendedTest extends TestCase
 
         $this->assertEquals(3, TestModel::allSuspensions()->count());
     }
+
+    /** @test */
+    public function it_can_check_if_model_is_suspended_when_it_is_not()
+    {
+        $this->assertFalse($this->testModel->isSuspended());
+    }
 }

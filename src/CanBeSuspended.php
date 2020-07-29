@@ -42,6 +42,10 @@ trait CanBeSuspended
 
     public function isSuspended(): bool
     {
+        if(! $this->suspension()) {
+            return false;
+        }
+
         if ($this->suspension()->is_suspended === null && $this->suspension()->suspended_until === null) {
             return false;
         }
