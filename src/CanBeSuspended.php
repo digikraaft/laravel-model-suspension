@@ -42,7 +42,7 @@ trait CanBeSuspended
 
     public function isSuspended(): bool
     {
-        if(! $this->suspension()) {
+        if (! $this->suspension()) {
             return false;
         }
 
