@@ -109,7 +109,7 @@ The `activeSuspensions` scope can be used to retrieve only active suspensions:
 $allActiveSuspensions = EloquentModel::activeSuspensions();
 ```
 
-The `noneActiveSuspensions` scope can be used to retrieve only non-active suspensions:
+The `nonActiveSuspensions` scope can be used to retrieve only non-active suspensions:
 ```
 $allNonActiveSuspensions = EloquentModel::nonActiveSuspensions();
 ```
