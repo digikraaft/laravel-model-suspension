@@ -93,7 +93,8 @@ trait CanBeSuspended
     private function deleteSuspension(): self
     {
         $this->suspension()->update([
-            'is_suspended' => false,
+            'is_suspended' => null,
+            'suspended_until' => null,
             'deleted_at' => now(),
         ]);
 
@@ -104,11 +105,14 @@ trait CanBeSuspended
 
     public function numberOfTimesSuspended(?Carbon $from = null, ?Carbon $to = null): int
     {
+        if(! $this->suspensions()->exists()) {
+            return 0;
+        }
+
         if ($from && $to) {
             if ($from->greaterThan($to)) {
                 throw InvalidDate::from();
             }
-
             return $this->suspensions()
                     ->whereBetween(
                         'created_at',
@@ -158,6 +162,53 @@ trait CanBeSuspended
                                     ->whereColumn($this->getModelKeyColumnName(), $this->getQualifiedKeyName());
                             }
                         );
+                }
+            );
+    }
+
+    public function scopeActiveSuspensions(Builder $builder)
+    {
+        $builder
+            ->whereHas(
+                'suspensions',
+                function (Builder $query) {
+                    $query
+                        ->whereIn(
+                            'id',
+                            function (QueryBuilder $query) {
+                                $query
+                                    ->select(DB::raw('max(id)'))
+                                    ->from($this->getSuspensionTableName())
+                                    ->where('model_type', $this->getSuspensionModelType())
+                                    ->whereColumn($this->getModelKeyColumnName(), $this->getQualifiedKeyName());
+                            }
+                        )->whereNotNull('is_suspended')
+                        ->orWhereDate('suspended_until', '>=', now()->toDateString());
+                }
+            );
+    }
+    public function scopeNoneActiveSuspensions(Builder $builder)
+    {
+        $builder
+            ->whereHas(
+                'suspensions',
+                function (Builder $query) {
+                    $query
+                        ->whereIn(
+                            'id',
+                            function (QueryBuilder $query) {
+                                $query
+                                    ->select(DB::raw('max(id)'))
+                                    ->from($this->getSuspensionTableName())
+                                    ->where('model_type', $this->getSuspensionModelType())
+                                    ->whereColumn($this->getModelKeyColumnName(), $this->getQualifiedKeyName());
+                            }
+                        )->where(function ($query){
+                            $query->whereNull('is_suspended');
+                        })
+                        ->orWhere(function ($query){
+                            $query->orWhereDate('suspended_until', '<=', now()->toDateString());
+                        });
                 }
             );
     }

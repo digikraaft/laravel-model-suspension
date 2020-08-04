@@ -266,6 +266,52 @@ class CanBeSuspendedTest extends TestCase
     }
 
     /** @test */
+    public function it_can_get_active_scoped_suspensions()
+    {
+        $model = TestModel::create(['name' => 'Tim O']);
+        $model->suspend(1, 'privacy violation');
+        $this->assertEquals('privacy violation', $model->suspension()->reason);
+
+        $model = TestModel::create(['name' => 'Digikraaft']);
+        $model->suspend(1, 'repeated payment failure');
+        $this->assertEquals('repeated payment failure', $model->suspension()->reason);
+        $model->unsuspend();
+        $this->assertFalse($model->isSuspended());
+
+        $model = TestModel::create(['name' => 'Digikraaft NG']);
+        $model->suspend(4, 'audit investigation');
+        $this->assertEquals('audit investigation', $model->suspension()->reason);
+        $this->assertTrue($model->isSuspended());
+
+        $this->assertEquals(2, TestModel::activeSuspensions()->count());
+        $model->unsuspend();
+        $this->assertEquals(1, TestModel::activeSuspensions()->count());
+    }
+
+    /** @test */
+    public function it_can_get_non_active_scoped_suspensions()
+    {
+        $model = TestModel::create(['name' => 'Tim O']);
+        $model->suspend(1, 'privacy violation');
+        $this->assertEquals('privacy violation', $model->suspension()->reason);
+
+        $model = TestModel::create(['name' => 'Digikraaft']);
+        $model->suspend(1, 'repeated payment failure');
+        $this->assertEquals('repeated payment failure', $model->suspension()->reason);
+        $model->unsuspend();
+        $this->assertFalse($model->isSuspended());
+
+        $model = TestModel::create(['name' => 'Digikraaft NG']);
+        $model->suspend(4, 'audit investigation');
+        $this->assertEquals('audit investigation', $model->suspension()->reason);
+        $this->assertTrue($model->isSuspended());
+
+        $this->assertEquals(1, TestModel::noneActiveSuspensions()->count());
+        $model->unsuspend();
+        $this->assertEquals(2, TestModel::noneActiveSuspensions()->count());
+    }
+
+    /** @test */
     public function it_can_check_if_model_is_suspended_when_it_is_not()
     {
         $this->assertFalse($this->testModel->isSuspended());
