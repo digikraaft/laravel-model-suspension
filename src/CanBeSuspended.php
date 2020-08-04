@@ -105,7 +105,7 @@ trait CanBeSuspended
 
     public function numberOfTimesSuspended(?Carbon $from = null, ?Carbon $to = null): int
     {
-        if(! $this->suspensions()->exists()) {
+        if (! $this->suspensions()->exists()) {
             return 0;
         }
 
@@ -113,6 +113,7 @@ trait CanBeSuspended
             if ($from->greaterThan($to)) {
                 throw InvalidDate::from();
             }
+
             return $this->suspensions()
                     ->whereBetween(
                         'created_at',
@@ -203,10 +204,10 @@ trait CanBeSuspended
                                     ->where('model_type', $this->getSuspensionModelType())
                                     ->whereColumn($this->getModelKeyColumnName(), $this->getQualifiedKeyName());
                             }
-                        )->where(function ($query){
+                        )->where(function ($query) {
                             $query->whereNull('is_suspended');
                         })
-                        ->orWhere(function ($query){
+                        ->orWhere(function ($query) {
                             $query->orWhereDate('suspended_until', '<=', now()->toDateString());
                         });
                 }
