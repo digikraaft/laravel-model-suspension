@@ -306,9 +306,9 @@ class CanBeSuspendedTest extends TestCase
         $this->assertEquals('audit investigation', $model->suspension()->reason);
         $this->assertTrue($model->isSuspended());
 
-        $this->assertEquals(1, TestModel::noneActiveSuspensions()->count());
+        $this->assertEquals(1, TestModel::nonActiveSuspensions()->count());
         $model->unsuspend();
-        $this->assertEquals(2, TestModel::noneActiveSuspensions()->count());
+        $this->assertEquals(2, TestModel::nonActiveSuspensions()->count());
     }
 
     /** @test */

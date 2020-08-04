@@ -187,7 +187,7 @@ trait CanBeSuspended
                 }
             );
     }
-    public function scopeNoneActiveSuspensions(Builder $builder)
+    public function scopeNonActiveSuspensions(Builder $builder)
     {
         $builder
             ->whereHas(

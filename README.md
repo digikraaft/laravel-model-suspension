@@ -103,6 +103,16 @@ The `allSuspensions` scope can be used to retrieve all the suspensions of the mo
 ```
 $allSuspensions = EloquentModel::allSuspensions();
 ```
+
+The `activeSuspensions` scope can be used to retrieve only active suspensions:
+```
+$allActiveSuspensions = EloquentModel::activeSuspensions();
+```
+
+The `noneActiveSuspensions` scope can be used to retrieve only non-active suspensions:
+```
+$allNonActiveSuspensions = EloquentModel::nonActiveSuspensions();
+```
 ### Get number of times a model has been suspended
 You can get the number of times a model has been suspended like this:
 ```
