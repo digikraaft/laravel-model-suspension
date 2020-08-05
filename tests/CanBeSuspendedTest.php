@@ -306,9 +306,28 @@ class CanBeSuspendedTest extends TestCase
         $this->assertEquals('audit investigation', $model->suspension()->reason);
         $this->assertTrue($model->isSuspended());
 
-        $this->assertEquals(1, TestModel::nonActiveSuspensions()->count());
-        $model->unsuspend();
         $this->assertEquals(2, TestModel::nonActiveSuspensions()->count());
+        $model->unsuspend();
+        $this->assertEquals(3, TestModel::nonActiveSuspensions()->count());
+    }
+
+    /** @test */
+    public function it_can_get_non_active_scoped_suspensions_for_models_without_suspension()
+    {
+        TestModel::create(['name' => 'Tim O']);
+
+        $model = TestModel::create(['name' => 'Digikraaft']);
+        $model->suspend();
+        $this->assertTrue($model->isSuspended());
+
+        $model = TestModel::create(['name' => 'Digikraaft NG']);
+        $model->suspend(4, 'audit investigation');
+        $this->assertEquals('audit investigation', $model->suspension()->reason);
+        $this->assertTrue($model->isSuspended());
+
+        $this->assertEquals(2, TestModel::nonActiveSuspensions()->count());
+        $model->unsuspend();
+        $this->assertEquals(3, TestModel::nonActiveSuspensions()->count());
     }
 
     /** @test */

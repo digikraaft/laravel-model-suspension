@@ -191,7 +191,8 @@ trait CanBeSuspended
     public function scopeNonActiveSuspensions(Builder $builder)
     {
         $builder
-            ->whereHas(
+            ->whereDoesntHave('suspensions')
+            ->orWhereHas(
                 'suspensions',
                 function (Builder $query) {
                     $query
