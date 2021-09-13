@@ -10,13 +10,13 @@
     "authors": [
         {
             "name": "Tim Oladoyinbo",
-            "email": "dev@digitalkraaft.com",
-            "homepage": "https://digitalkraaft.com",
+            "email": "hello@digikraaft.ng",
+            "homepage": "https://digikraaft.ng",
             "role": "Developer"
         }
     ],
     "require": {
-        "php": "^7.4",
+        "php": "^8.0",
         "laravel/framework": "^8.0"
     },
     "require-dev": {

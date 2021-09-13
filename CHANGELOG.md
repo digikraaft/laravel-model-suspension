@@ -1,3 +1,7 @@
+## 2.0.0 2021-09-13
+- Support for PHP 8
+## 1.2.0 - 2021-01-11
+- Support for Laravel 8
 ## 1.1.1 - 2020-08-05
 - Fixed `nonActiveSuspensions` scope to include models that don't have a suspensions relationship.
 ## 1.1.0 - 2020-08-04
