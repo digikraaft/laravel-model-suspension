@@ -90,6 +90,13 @@ and second arguments respectively:
 //suspend model for the next 7 days with a reason
 $model->suspend(7, 'optional reason');
 ```
+
+You can also specify the suspension period (in minutes or days) with an optional third argument:
+``` 
+//suspend model for the next 30 minutes with a reason
+$model->suspend(30, 'optional reason', Suspension::PERIOD_IN_MINUTES);
+```
+
 ### Retrieving suspensions
 You can get the current suspension of the model like this:
 ```
