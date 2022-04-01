@@ -29,12 +29,28 @@ trait CanBeSuspended
         return $this->suspensions()->first();
     }
 
-    public function suspend(?int $days = 0, ?string $reason = null): self
+    public function suspend(?int $periodCount = 0, ?string $reason = null, string $periodUnit = Suspension::PERIOD_IN_DAYS): self
     {
         $suspended_until = null;
 
-        if ($days > 0) {
-            $suspended_until = now()->addDays($days);
+        if ($periodCount > 0) {
+            if($periodUnit == Suspension::PERIOD_IN_MINUTES){
+                $suspended_until = now()->addMinutes($periodCount);
+            }
+            if($periodUnit == Suspension::PERIOD_IN_DAYS){
+                $suspended_until = now()->addDays($periodCount);
+            }
+        }
+
+        return $this->createSuspension($suspended_until, $reason);
+    }
+
+    public function suspendInMinutes(?int $minutes = 0, ?string $reason = null): self
+    {
+        $suspended_until = null;
+
+        if ($minutes > 0) {
+            $suspended_until = now()->addMinutes($minutes);
         }
 
         return $this->createSuspension($suspended_until, $reason);
@@ -60,7 +76,6 @@ trait CanBeSuspended
 
         return true;
     }
-
     public function unsuspend(): self
     {
         return $this->deleteSuspension();

@@ -61,6 +61,7 @@ class CanBeSuspendedTest extends TestCase
     {
         $this->assertNull($this->testModel->suspension());
     }
+
     /** @test */
     public function it_allows_null_for_an_empty_reason_when_suspending()
     {
