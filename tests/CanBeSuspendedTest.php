@@ -23,8 +23,8 @@ class CanBeSuspendedTest extends TestCase
         ]);
     }
 
-    /** @test */
-    public function it_can_suspend_model()
+
+    public function test_that_it_can_suspend_model()
     {
         $this->testModel->suspend(1, 'privacy violation');
         $reason = $this->testModel->suspension()->reason;
@@ -33,52 +33,52 @@ class CanBeSuspendedTest extends TestCase
         $this->assertTrue($this->testModel->isSuspended());
     }
 
-    /** @test */
-    public function it_can_suspend_model_without_suspension_days()
+
+    public function test_that_it_can_suspend_model_without_suspension_days()
     {
         $this->testModel->suspend();
         $this->assertTrue($this->testModel->isSuspended());
     }
 
-    /** @test */
-    public function it_can_handle_an_empty_reason_when_suspending()
+
+    public function test_that_it_can_handle_an_empty_reason_when_suspending()
     {
         $this->testModel->suspend(1);
 
         $this->assertTrue($this->testModel->isSuspended());
     }
 
-    /** @test */
-    public function a_reason_can_be_set()
+
+    public function test_that_a_reason_can_be_set()
     {
         $this->testModel->suspend(1, 'privacy violation');
 
         $this->assertEquals('privacy violation', $this->testModel->suspension()->reason);
     }
 
-    /** @test */
-    public function it_can_handle_getting_a_suspension_when_there_are_none_set()
+
+    public function test_that_it_can_handle_getting_a_suspension_when_there_are_none_set()
     {
         $this->assertNull($this->testModel->suspension());
     }
 
-    /** @test */
-    public function it_allows_null_for_an_empty_reason_when_suspending()
+
+    public function test_that_it_allows_null_for_an_empty_reason_when_suspending()
     {
         $this->testModel->suspend(1, null);
 
         $this->assertNull($this->testModel->suspension()->reason);
     }
 
-    /** @test */
-    public function it_allows_for_empty_days_and_reason_when_suspending()
+
+    public function test_that_it_allows_for_empty_days_and_reason_when_suspending()
     {
         $this->testModel->suspend();
         $this->assertTrue($this->testModel->isSuspended());
     }
 
-    /** @test */
-    public function it_can_return_the_latest_suspension()
+
+    public function test_that_it_can_return_the_latest_suspension()
     {
         $this->testModel->suspend();
         $this->testModel->suspend(1, 'second suspension');
@@ -91,8 +91,8 @@ class CanBeSuspendedTest extends TestCase
         $this->assertNotEquals('second suspension', $this->testModel->suspension()->reason);
     }
 
-    /** @test */
-    public function it_can_return_the_latest_suspension_after_unsuspending()
+
+    public function test_that_it_can_return_the_latest_suspension_after_unsuspending()
     {
         $this->testModel->suspend()
                         ->suspend(1, 'second suspension')
@@ -106,8 +106,8 @@ class CanBeSuspendedTest extends TestCase
         $this->assertNotEquals('second suspension', $this->testModel->suspension()->reason);
     }
 
-    /** @test */
-    public function it_becomes_unsuspended_after_suspension_period()
+
+    public function test_that_it_becomes_unsuspended_after_suspension_period()
     {
         TestTime::freeze('Y-m-d', '2020-07-23');
         TestTime::subDays(10);
@@ -120,23 +120,23 @@ class CanBeSuspendedTest extends TestCase
         $this->assertFalse($this->testModel->suspension()->suspended_until >= now()->toDateString());
     }
 
-    /** @test */
-    public function it_still_suspends_when_suspension_date_is_in_the_future_and_is_suspended_is_true()
+
+    public function test_that_it_still_suspends_when_suspension_date_is_in_the_future_and_is_suspended_is_true()
     {
         $this->testModel->suspend(10);
         $this->assertTrue($this->testModel->isSuspended());
     }
 
-    /** @test */
-    public function it_can_unsuspend()
+
+    public function test_that_it_can_unsuspend()
     {
         $this->testModel->suspend(10);
         $this->testModel->unsuspend();
         $this->assertFalse($this->testModel->isSuspended());
     }
 
-    /** @test */
-    public function it_can_use_a_different_suspension_model()
+
+    public function test_that_it_can_use_a_different_suspension_model()
     {
         $this->app['config']->set(
             'model-suspension.suspension_model',
@@ -148,8 +148,8 @@ class CanBeSuspendedTest extends TestCase
         $this->assertInstanceOf(AlternativeSuspensionModel::class, $this->testModel->suspension());
     }
 
-    /** @test */
-    public function it_can_use_a_custom_name_for_the_relationship_id_column()
+
+    public function test_that_it_can_use_a_custom_name_for_the_relationship_id_column()
     {
         $this->app['config']->set(
             'model-suspension.suspension_model',
@@ -170,8 +170,8 @@ class CanBeSuspendedTest extends TestCase
         $this->assertTrue($model->suspension()->is(CustomModelKeySuspensionModel::first()));
     }
 
-    /** @test */
-    public function it_uses_the_default_relationship_id_column_when_configuration_value_is_no_present()
+
+    public function test_that_it_uses_the_default_relationship_id_column_when_configuration_value_is_no_present()
     {
         $this->app['config']->offsetUnset('model-suspension.model_primary_key_attribute');
 
@@ -182,8 +182,8 @@ class CanBeSuspendedTest extends TestCase
         $this->assertEquals($model->id, $model->suspension()->model_id);
     }
 
-    /** @test */
-    public function it_can_assert_that_user_has_been_suspended_before()
+
+    public function test_that_it_can_assert_that_user_has_been_suspended_before()
     {
         $this->testModel->suspend(1);
         $this->assertTrue($this->testModel->isSuspended());
@@ -193,8 +193,8 @@ class CanBeSuspendedTest extends TestCase
         $this->assertTrue($this->testModel->hasEverBeenSuspended());
     }
 
-    /** @test */
-    public function it_can_return_number_of_times_suspended()
+
+    public function test_that_it_can_return_number_of_times_suspended()
     {
         $this->testModel->suspend(1);
         $this->assertTrue($this->testModel->isSuspended());
@@ -207,8 +207,8 @@ class CanBeSuspendedTest extends TestCase
         $this->assertEquals(2, $this->testModel->numberOfTimesSuspended());
     }
 
-    /** @test */
-    public function it_throws_error_when_from_date_is_later_than_to_date()
+
+    public function test_that_it_throws_error_when_from_date_is_later_than_to_date()
     {
         $this->testModel->suspend(1);
         $this->assertTrue($this->testModel->isSuspended());
@@ -222,8 +222,8 @@ class CanBeSuspendedTest extends TestCase
         $this->testModel->numberOfTimesSuspended(now(), now()->subDays(2));
     }
 
-    /** @test */
-    public function it_can_return_number_of_times_suspended_when_period_is_specified()
+
+    public function test_that_it_can_return_number_of_times_suspended_when_period_is_specified()
     {
         $this->testModel->suspensions()->create([
             'is_suspended' => true,
@@ -246,8 +246,8 @@ class CanBeSuspendedTest extends TestCase
         );
     }
 
-    /** @test */
-    public function it_can_get_scoped_suspensions()
+
+    public function test_that_it_can_get_scoped_suspensions()
     {
         $model = TestModel::create(['name' => 'Tim O']);
         $model->suspend(1, 'privacy violation');
@@ -266,8 +266,8 @@ class CanBeSuspendedTest extends TestCase
         $this->assertEquals(3, TestModel::allSuspensions()->count());
     }
 
-    /** @test */
-    public function it_can_get_active_scoped_suspensions()
+
+    public function test_that_it_can_get_active_scoped_suspensions()
     {
         $model = TestModel::create(['name' => 'Tim O']);
         $model->suspend(1, 'privacy violation');
@@ -289,8 +289,8 @@ class CanBeSuspendedTest extends TestCase
         $this->assertEquals(1, TestModel::activeSuspensions()->count());
     }
 
-    /** @test */
-    public function it_can_get_non_active_scoped_suspensions()
+
+    public function test_that_it_can_get_non_active_scoped_suspensions()
     {
         $model = TestModel::create(['name' => 'Tim O']);
         $model->suspend(1, 'privacy violation');
@@ -312,8 +312,8 @@ class CanBeSuspendedTest extends TestCase
         $this->assertEquals(3, TestModel::nonActiveSuspensions()->count());
     }
 
-    /** @test */
-    public function it_can_get_non_active_scoped_suspensions_for_models_without_suspension()
+
+    public function test_that_it_can_get_non_active_scoped_suspensions_for_models_without_suspension()
     {
         TestModel::create(['name' => 'Tim O']);
 
@@ -331,8 +331,8 @@ class CanBeSuspendedTest extends TestCase
         $this->assertEquals(3, TestModel::nonActiveSuspensions()->count());
     }
 
-    /** @test */
-    public function it_can_check_if_model_is_suspended_when_it_is_not()
+
+    public function test_that_it_can_check_if_model_is_suspended_when_it_is_not()
     {
         $this->assertFalse($this->testModel->isSuspended());
     }
